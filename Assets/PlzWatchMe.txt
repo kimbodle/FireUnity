@@ -1,0 +1,2 @@
+D:\UnityProject\FireUnity\Assets\Firebase
+이 경로에 있던 애들 중에 플러그인 64어쩌구에 있는번들이가 업로드가 안돼서 D:\UnityProject\FireUnity\Assets\Firebase에있는 파일들은 이건 따로 저장함.
