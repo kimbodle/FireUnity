@@ -8,17 +8,20 @@ using TMPro;
 
 public class FirebaseAuthController : MonoBehaviour
 {
+    [Header("로그인")]
     public TMP_InputField emailInput;
     public TMP_InputField passwordInput;
     public TMP_Text messageText;
     public TMP_Text UserUidText;
+
+    public FirestoreController firestoreController;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
 
     // UI 업데이트를 위한 상태 변수
     private string message = "";
-    private string uid = "";
+    public string uid = "";
     private bool isMessageUpdated = false;
 
     void Start()
