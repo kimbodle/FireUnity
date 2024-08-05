@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     private FirestoreController firestoreController;
     private FirebaseAuthController authController;
 
+    [SerializeField]
     private int currentDay = 1;
+    [SerializeField]
     private int currentTask = 0;
     private DayController currentDayController;
 
@@ -52,13 +54,13 @@ public class GameManager : MonoBehaviour
         if (currentDayController != null && currentDayController.IsDayComplete(currentTask))
         {
             currentDay++;
-            currentTask = 1;
+            currentTask = 1; //다음날로 넘어갔을경우 다시 Task를 1로 초기화
             SaveGame();
             LoadNextDay();
         }
         else
         {
-            SaveGame();
+            //SaveGame(); //각 Task가 끝날때마다 자동 저장
         }
     }
 
@@ -92,7 +94,12 @@ public class GameManager : MonoBehaviour
             if (currentDayController != null)
             {
                 currentDayController.Initialize(currentTask);
-            }
+                Debug.Log("DayController로드 성공"+ day);
+             }
+        }
+        else
+        {
+            Debug.Log("DayContoller 못찾음!");
         }
     }
 

@@ -40,7 +40,20 @@ public class FirebaseAuthController : MonoBehaviour
     {
         InitializeFirebase();
         messageText.text = string.Empty;
+
+        /*// 로그인 상태 확인
+        if (auth.CurrentUser != null)
+        {
+            // 사용자가 이미 로그인 되어 있으면 해당 상태를 유지하도록 하거나 로그아웃할 수 있습니다.
+            Debug.Log("User is already logged in: " + auth.CurrentUser.Email);
+        }
+        else
+        {
+            // 사용자가 로그인하지 않은 상태라면 초기 상태로 설정
+            Debug.Log("No user is logged in.");
+        }*/
     }
+
 
     void Update()
     {
@@ -139,6 +152,11 @@ public class FirebaseAuthController : MonoBehaviour
     public void Logout()
     {
         auth.SignOut();
+    }
+
+    void OnApplicationQuit()
+    {
+        Logout(); // 앱 종료 시 로그아웃 처리
     }
 
     private void UpdateUI()

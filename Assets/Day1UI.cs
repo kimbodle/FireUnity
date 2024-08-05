@@ -1,51 +1,32 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class Day1UI : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }
-
-    public GameObject LoginUI;
     public Button completeTaskButton;
     public Button saveGameButton;
     public Button loadGameButton;
-
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    // Start is called before the first frame update
     void Start()
     {
-        LoginUI.SetActive(false);
-
-        // 버튼 클릭 이벤트에 메서드 연결
         completeTaskButton.onClick.AddListener(OnCompleteTaskButtonClicked);
         saveGameButton.onClick.AddListener(OnSaveGameButtonClicked);
         loadGameButton.onClick.AddListener(OnLoadGameButtonClicked);
     }
 
-    public void openLoginUI()
+    private void OnLoadGameButtonClicked()
     {
-        LoginUI.SetActive(true);
+        GameManager.Instance.LoadGame();
     }
 
-    public void closeLoginUI()
+    // Update is called once per frame
+    void Update()
     {
-        LoginUI.SetActive(false);
+        
     }
-
     private void OnCompleteTaskButtonClicked()
     {
         // Task 완료 처리
@@ -56,11 +37,5 @@ public class UIManager : MonoBehaviour
     {
         // 게임 상태 저장
         GameManager.Instance.SaveGame();
-    }
-
-    private void OnLoadGameButtonClicked()
-    {
-        // 게임 상태 불러오기
-        GameManager.Instance.LoadGame();
     }
 }
