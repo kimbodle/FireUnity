@@ -1,25 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Firebase.Firestore;
 
-public class Day1Controller : MonoBehaviour
+public class Day1Controller : DayController
 {
-    public FirestoreController firestoreController;
-    public FirebaseAuthController firebaseAuthController;
-    public string userId; // Set this with the logged-in user ID
-
-    public void CompleteDay1()
+    public override void Initialize(int task)
     {
-        // 게임 진행 로직...
-        userId = firebaseAuthController.uid;
+        // 초기화 로직
+        if (task > 1)
+        {
+            // Task1 완료 상태로 시작
+            FindItem();
+        }
 
-        // Day1을 완료했으므로 Day2로 업데이트
-        firestoreController.SaveProgress(userId, 2);
+    }
 
-        Debug.Log("Day1 완료");
-        // Day2 씬 로드
-        //SceneManager.LoadScene("Day2");
+    public override void CompleteTask(int task)
+    {
+        // Task 완료 시 로직
+        if (task == 1)
+        {
+            FindItem();
+        }
+    }
+
+    private void FindItem()
+    {
+        gameState["itemFound"] = true;
+        gameState["labVisible"] = true;
+    }
+
+    public override bool IsDayComplete(int task)
+    {
+        // Day1의 모든 Task가 완료되었는지 확인
+        return task > 2; // 예: Day1은 2개의 Task가 있음
     }
 }

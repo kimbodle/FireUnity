@@ -1,28 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using Firebase.Auth;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 
 public class FirebaseAuthController : MonoBehaviour
 {
-    [Header("로그인")]
+    public static FirebaseAuthController Instance { get; private set; } // 싱글톤 인스턴스
+
     public TMP_InputField emailInput;
     public TMP_InputField passwordInput;
     public TMP_Text messageText;
     public TMP_Text UserUidText;
 
     public FirestoreController firestoreController;
+    public GameManager gameManager;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
 
-    // UI 업데이트를 위한 상태 변수
     private string message = "";
     public string uid = "";
     private bool isMessageUpdated = false;
+
+    void Awake()
+    {
+        // 싱글톤 패턴 구현
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않도록 설정
+        }
+        else
+        {
+            Destroy(gameObject); // 중복 인스턴스가 생성되면 파괴
+        }
+    }
 
     void Start()
     {
@@ -35,7 +47,7 @@ public class FirebaseAuthController : MonoBehaviour
         if (isMessageUpdated)
         {
             UpdateUI();
-            isMessageUpdated = false; // 상태 초기화
+            isMessageUpdated = false;
         }
     }
 
@@ -52,7 +64,7 @@ public class FirebaseAuthController : MonoBehaviour
     {
         auth = FirebaseAuth.DefaultInstance;
         auth.StateChanged += AuthStateChanged;
-        AuthStateChanged(this, null); // 초기 상태를 처리
+        AuthStateChanged(this, null);
     }
 
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
@@ -74,6 +86,7 @@ public class FirebaseAuthController : MonoBehaviour
                 message = "Signed in: " + user.Email;
                 uid = user.UserId;
                 isMessageUpdated = true;
+                LoadGameState();
             }
         }
     }
@@ -89,7 +102,6 @@ public class FirebaseAuthController : MonoBehaviour
                 {
                     message = "Sign up failed: " + task.Exception?.Message;
                     isMessageUpdated = true;
-                    Debug.Log("회원가입 실패");
                     return;
                 }
 
@@ -98,8 +110,6 @@ public class FirebaseAuthController : MonoBehaviour
                 message = "Sign up successful: " + newUser.Email;
                 uid = newUser.UserId;
                 isMessageUpdated = true;
-
-                Debug.LogFormat("회원가입 성공: {0} ({1})", newUser.Email, newUser.UserId);
             });
     }
 
@@ -114,7 +124,6 @@ public class FirebaseAuthController : MonoBehaviour
                 {
                     message = "Login failed: " + task.Exception?.Message;
                     isMessageUpdated = true;
-                    Debug.Log("로그인 실패");
                     return;
                 }
 
@@ -123,8 +132,7 @@ public class FirebaseAuthController : MonoBehaviour
                 message = "Login successful: " + newUser.Email;
                 uid = newUser.UserId;
                 isMessageUpdated = true;
-
-                Debug.LogFormat("로그인 성공: {0} ({1})", newUser.Email, newUser.UserId);
+                LoadGameState();
             });
     }
 
@@ -139,5 +147,19 @@ public class FirebaseAuthController : MonoBehaviour
         UserUidText.text = uid;
         emailInput.text = "";
         passwordInput.text = "";
+    }
+
+    private void LoadGameState()
+    {
+        firestoreController.LoadGameState(uid, OnGameStateLoaded); //아래 함수를 파라미터로 같이 전달
+    }
+
+    private void OnGameStateLoaded(int currentDay, int currentTask, Dictionary<string, bool> gameState) //게임매니저의 게임상태 업데이트 함수호출
+    {
+        Debug.Log("현재 Day: " + currentDay + ", 현재 Task: " + currentTask);
+        if (gameManager != null)
+        {
+            gameManager.InitializeGameState(currentDay, currentTask, gameState);
+        }
     }
 }
