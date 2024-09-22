@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         if (authController != null && !string.IsNullOrEmpty(authController.uid))
         {
             var gameState = currentDayController?.GetGameState() ?? new Dictionary<string, bool>();
-            firestoreController.SaveGameState(authController.uid, currentDay, currentTask, gameState);
+            firestoreController.SaveGameState(currentDay, currentTask, gameState);
         }
     }
 
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     {
         if (authController != null && !string.IsNullOrEmpty(authController.uid))
         {
-            firestoreController.LoadGameState(authController.uid, (day, task, gameState) =>
+            firestoreController.LoadGameState((day, task, gameState) =>
             {
                 InitializeGameState(day, task, gameState);
             });

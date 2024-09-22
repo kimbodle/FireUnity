@@ -31,9 +31,9 @@ public class UIManager : MonoBehaviour
         LoginUI.SetActive(false);
 
         // 버튼 클릭 이벤트에 메서드 연결
-        completeTaskButton.onClick.AddListener(OnCompleteTaskButtonClicked);
-        saveGameButton.onClick.AddListener(OnSaveGameButtonClicked);
-        loadGameButton.onClick.AddListener(OnLoadGameButtonClicked);
+        //completeTaskButton.onClick.AddListener(OnCompleteTaskButtonClicked);
+        //saveGameButton.onClick.AddListener(OnSaveGameButtonClicked);
+        //loadGameButton.onClick.AddListener(OnLoadGameButtonClicked);
     }
 
     public void openLoginUI()

@@ -8,6 +8,7 @@ public class FirestoreController : MonoBehaviour
     public static FirestoreController Instance { get; private set; } // 싱글톤 인스턴스
 
     private FirebaseFirestore db;
+    private FirebaseAuthController authController;
 
     void Awake()
     {
@@ -26,11 +27,18 @@ public class FirestoreController : MonoBehaviour
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
+        authController = FindObjectOfType<FirebaseAuthController>();
     }
 
-    public void SaveGameState(string uid, int currentDay, int currentTask, Dictionary<string, bool> gameState)
+    public void SaveGameState(int currentDay, int currentTask, Dictionary<string, bool> gameState)
     {
-        DocumentReference docRef = db.Collection("users").Document(uid);
+        if (!authController.IsLoggedIn())
+        {
+            Debug.LogError("로그인된 사용자가 없습니다.");
+            return;
+        }
+        string userId = authController.User.UserId;
+        DocumentReference docRef = db.Collection("users").Document(userId);
         Dictionary<string, object> data = new Dictionary<string, object>
         {
             { "currentDay", currentDay },
@@ -51,9 +59,15 @@ public class FirestoreController : MonoBehaviour
         });
     }
 
-    public void LoadGameState(string uid, System.Action<int, int, Dictionary<string, bool>> onGameStateLoaded)
+    public void LoadGameState(System.Action<int, int, Dictionary<string, bool>> onGameStateLoaded)
     {
-        DocumentReference docRef = db.Collection("users").Document(uid);
+        if (!authController.IsLoggedIn())
+        {
+            Debug.LogError("로그인된 사용자가 없습니다.");
+            return;
+        }
+        string userId = authController.User.UserId;
+        DocumentReference docRef = db.Collection("users").Document(userId);
 
         docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {

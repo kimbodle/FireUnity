@@ -12,11 +12,11 @@ public class FirebaseAuthController : MonoBehaviour
     public TMP_Text messageText;
     public TMP_Text UserUidText;
 
-    public FirestoreController firestoreController;
+    private FirestoreController firestoreController;
     public GameManager gameManager;
 
     private FirebaseAuth auth;
-    private FirebaseUser user;
+    public FirebaseUser User {  get; set; }
 
     private string message = "";
     public string uid = "";
@@ -24,15 +24,14 @@ public class FirebaseAuthController : MonoBehaviour
 
     void Awake()
     {
-        // 싱글톤 패턴 구현
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않도록 설정
+            DontDestroyOnLoad(gameObject); 
         }
         else
         {
-            Destroy(gameObject); // 중복 인스턴스가 생성되면 파괴
+            Destroy(gameObject);
         }
     }
 
@@ -44,7 +43,7 @@ public class FirebaseAuthController : MonoBehaviour
         /*// 로그인 상태 확인
         if (auth.CurrentUser != null)
         {
-            // 사용자가 이미 로그인 되어 있으면 해당 상태를 유지하도록 하거나 로그아웃할 수 있습니다.
+            // 사용자가 이미 로그인 되어 있으면 해당 상태를 유지하도록 하거나 로그아웃
             Debug.Log("User is already logged in: " + auth.CurrentUser.Email);
         }
         else
@@ -76,28 +75,29 @@ public class FirebaseAuthController : MonoBehaviour
     void InitializeFirebase()
     {
         auth = FirebaseAuth.DefaultInstance;
+        firestoreController = FindObjectOfType<FirestoreController>();
         auth.StateChanged += AuthStateChanged;
         AuthStateChanged(this, null);
     }
 
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
-        if (auth.CurrentUser != user)
+        if (auth.CurrentUser != User)
         {
-            bool signedIn = user != auth.CurrentUser && auth.CurrentUser != null && auth.CurrentUser.IsValid();
-            if (!signedIn && user != null)
+            bool signedIn = User != auth.CurrentUser && auth.CurrentUser != null && auth.CurrentUser.IsValid();
+            if (!signedIn && User != null)
             {
-                Debug.Log("Signed out " + user.UserId);
-                message = "Signed out: " + user.UserId;
+                Debug.Log("Signed out " + User.UserId);
+                message = "Signed out: " + User.UserId;
                 uid = "";
                 isMessageUpdated = true;
             }
-            user = auth.CurrentUser;
+            User = auth.CurrentUser;
             if (signedIn)
             {
-                Debug.Log("Signed in " + user.UserId);
-                message = "Signed in: " + user.Email;
-                uid = user.UserId;
+                Debug.Log("Signed in " + User.UserId);
+                message = "Signed in: " + User.Email;
+                uid = User.UserId;
                 isMessageUpdated = true;
                 LoadGameState();
             }
@@ -145,6 +145,8 @@ public class FirebaseAuthController : MonoBehaviour
                 message = "Login successful: " + newUser.Email;
                 uid = newUser.UserId;
                 isMessageUpdated = true;
+
+                //로그인 후 불러오기
                 LoadGameState();
             });
     }
@@ -152,11 +154,18 @@ public class FirebaseAuthController : MonoBehaviour
     public void Logout()
     {
         auth.SignOut();
+        User = null;
     }
 
     void OnApplicationQuit()
     {
         Logout(); // 앱 종료 시 로그아웃 처리
+        
+    }
+
+    public string GetReturnUid()
+    {
+        return uid;
     }
 
     private void UpdateUI()
@@ -169,7 +178,7 @@ public class FirebaseAuthController : MonoBehaviour
 
     private void LoadGameState()
     {
-        firestoreController.LoadGameState(uid, OnGameStateLoaded); //아래 함수를 파라미터로 같이 전달
+        firestoreController.LoadGameState(OnGameStateLoaded); //아래 함수를 파라미터로 같이 전달
     }
 
     private void OnGameStateLoaded(int currentDay, int currentTask, Dictionary<string, bool> gameState) //게임매니저의 게임상태 업데이트 함수호출
@@ -179,5 +188,10 @@ public class FirebaseAuthController : MonoBehaviour
         {
             gameManager.InitializeGameState(currentDay, currentTask, gameState);
         }
+    }
+
+    public bool IsLoggedIn()
+    {
+        return User != null; // User 프로퍼티로 확인
     }
 }
