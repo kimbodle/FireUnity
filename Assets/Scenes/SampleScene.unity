@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentDay: 1
-  currentTask: 0
+  currentTask: 
 --- !u!1 &47506043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,7 +1030,6 @@ MonoBehaviour:
   passwordInput: {fileID: 833902092}
   messageText: {fileID: 1004150520}
   UserUidText: {fileID: 1774228779}
-  firestoreController: {fileID: 863864352}
   gameManager: {fileID: 3639808}
   uid: 
 --- !u!4 &858961803
@@ -1377,7 +1376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1157254876
 MonoBehaviour:
   m_ObjectHideFlags: 0

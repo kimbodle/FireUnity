@@ -181,7 +181,7 @@ public class FirebaseAuthController : MonoBehaviour
         firestoreController.LoadGameState(OnGameStateLoaded); //아래 함수를 파라미터로 같이 전달
     }
 
-    private void OnGameStateLoaded(int currentDay, int currentTask, Dictionary<string, bool> gameState) //게임매니저의 게임상태 업데이트 함수호출
+    private void OnGameStateLoaded(int currentDay, string currentTask, Dictionary<string, bool> gameState) //게임매니저의 게임상태 업데이트 함수호출
     {
         Debug.Log("현재 Day: " + currentDay + ", 현재 Task: " + currentTask);
         if (gameManager != null)

@@ -30,7 +30,7 @@ public class FirestoreController : MonoBehaviour
         authController = FindObjectOfType<FirebaseAuthController>();
     }
 
-    public void SaveGameState(int currentDay, int currentTask, Dictionary<string, bool> gameState)
+    public void SaveGameState(int currentDay, string currentTask, Dictionary<string, bool> gameState)
     {
         if (!authController.IsLoggedIn())
         {
@@ -59,7 +59,7 @@ public class FirestoreController : MonoBehaviour
         });
     }
 
-    public void LoadGameState(System.Action<int, int, Dictionary<string, bool>> onGameStateLoaded)
+    public void LoadGameState(System.Action<int, string, Dictionary<string, bool>> onGameStateLoaded)
     {
         if (!authController.IsLoggedIn())
         {
@@ -77,7 +77,7 @@ public class FirestoreController : MonoBehaviour
                 if (snapshot.Exists)
                 {
                     int currentDay = snapshot.GetValue<int>("currentDay");
-                    int currentTask = snapshot.GetValue<int>("currentTask");
+                    string currentTask = snapshot.GetValue<string>("currentTask");
                     Dictionary<string, bool> gameState = snapshot.GetValue<Dictionary<string, bool>>("gameState");
                     onGameStateLoaded(currentDay, currentTask, gameState);
                     Debug.Log("저장된 게임 상태 불러오기. 성공");
@@ -86,13 +86,13 @@ public class FirestoreController : MonoBehaviour
                 else
                 {
                     Debug.Log("저장된 게임 상태가 없습니다.");
-                    onGameStateLoaded(1, 0, new Dictionary<string, bool>()); // 기본값 설정
+                    onGameStateLoaded(1, "Intro", new Dictionary<string, bool>()); // 기본값 설정
                 }
             }
             else
             {
                 Debug.LogError("게임 상태 불러오기 실패: " + task.Exception);
-                onGameStateLoaded(1, 0, new Dictionary<string, bool>()); // 오류 시 기본값 설정
+                onGameStateLoaded(1, "Intro", new Dictionary<string, bool>()); // 오류 시 기본값 설정
             }
         });
     }

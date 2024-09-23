@@ -9,10 +9,9 @@ public class GameManager : MonoBehaviour
     private FirestoreController firestoreController;
     private FirebaseAuthController authController;
 
-    [SerializeField]
-    private int currentDay = 1;
-    [SerializeField]
-    private int currentTask = 0;
+    [SerializeField] private int currentDay = 1;
+    [SerializeField] public string currentTask = "Intro";
+    [SerializeField] public Dictionary<string, bool> gameState = new Dictionary<string, bool>();
     private DayController currentDayController;
 
     private void Awake()
@@ -20,7 +19,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴되지 않도록 설정
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -50,11 +49,9 @@ public class GameManager : MonoBehaviour
             currentDayController.CompleteTask(currentTask);
         }
 
-        currentTask++;
         if (currentDayController != null && currentDayController.IsDayComplete(currentTask))
         {
             currentDay++;
-            currentTask = 1; //다음날로 넘어갔을경우 다시 Task를 1로 초기화
             SaveGame();
             LoadNextDay();
         }
@@ -68,15 +65,17 @@ public class GameManager : MonoBehaviour
     {
         if (authController != null && !string.IsNullOrEmpty(authController.uid))
         {
-            var gameState = currentDayController?.GetGameState() ?? new Dictionary<string, bool>();
-            firestoreController.SaveGameState(currentDay, currentTask, gameState);
+            var currentState = currentDayController?.GetGameState() ?? new Dictionary<string, bool>();
+            firestoreController.SaveGameState(currentDay, currentTask, currentState);
         }
     }
 
-    public void InitializeGameState(int day, int task, Dictionary<string, bool> gameState)
+    public void InitializeGameState(int day, string task, Dictionary<string, bool> loadedGameState)
     {
         currentDay = day;
         currentTask = task;
+        // gameState 저장
+        gameState = loadedGameState;
 
         string sceneName = "Day" + currentDay + "Scene";
         SceneManager.LoadScene(sceneName);
@@ -93,6 +92,7 @@ public class GameManager : MonoBehaviour
             currentDayController = controllerObject.GetComponent<DayController>();
             if (currentDayController != null)
             {
+                Debug.Log($"게임 매니저의 currentTask {currentTask}");
                 currentDayController.Initialize(currentTask);
                 Debug.Log("DayController로드 성공"+ day);
              }
@@ -113,9 +113,9 @@ public class GameManager : MonoBehaviour
     {
         if (authController != null && !string.IsNullOrEmpty(authController.uid))
         {
-            firestoreController.LoadGameState((day, task, gameState) =>
+            firestoreController.LoadGameState((day, task, loadedGameState) =>
             {
-                InitializeGameState(day, task, gameState);
+                InitializeGameState(day, task, loadedGameState);
             });
         }
     }
