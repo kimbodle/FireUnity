@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Day1Controller : DayController
 {
+    private TaskHandler taskHandler;
+
     private void OnEnable()
     {
         gameManager = FindObjectOfType<GameManager>();
+        taskHandler = FindObjectOfType<TaskHandler>();
     }
 
     public override void Initialize(string task)
@@ -31,15 +35,15 @@ public class Day1Controller : DayController
         switch (task)
         {
             case "FindItem":
-                CompleteFindItem();
+                MarkTaskComplete("FindItem");
                 break;
 
             case "MapClick":
-                CompleteMapClick();
+                MarkTaskComplete("MapClick");
                 break;
 
             case "Moveshelter":
-                CompleteMoveShelter();
+                MarkTaskComplete("Moveshelter");
                 break;
 
             default:
@@ -51,30 +55,6 @@ public class Day1Controller : DayController
         UpdateCurrentTask(task);
     }
 
-    private void CompleteFindItem()
-    {
-        gameState["FindItem"] = true;
-        Debug.Log("FindItem 완료");
-    }
-
-    private void CompleteMapClick()
-    {
-        gameState["MapClick"] = true;
-        Debug.Log("MapClick 완료");
-    }
-
-    private void CompleteMoveShelter()
-    {
-        gameState["Moveshelter"] = true;
-        Debug.Log("Moveshelter 완료");
-    }
-
-    private void UpdateCurrentTask(string task)
-    {
-        gameManager.currentTask = task;
-        Debug.Log($"currentTask 업데이트: {task}");
-    }
-
     public override bool IsDayComplete(string task)
     {
         // 모든 Task가 완료되었는지 확인
@@ -83,24 +63,21 @@ public class Day1Controller : DayController
 
     protected override void HandleTaskCompletion(string taskKey)
     {
-        switch (taskKey)
+        if (taskKey == "Start")
         {
-            //씬 이동만 한 상태도 저장해야할 듯
-            case "FindItem":
-                Debug.Log("FindItem 후속 작업 처리");
-                break;
-
-            case "MapClick":
-                Debug.Log("MapClick 후속 작업 처리");
-                break;
-
-            case "Moveshelter":
-                Debug.Log("Moveshelter 후속 작업 처리");
-                break;
-
-            default:
-                Debug.LogWarning($"{taskKey}는 지원되지 않는 작업입니다.");
-                break;
+            ReloadCurrentScene();
+            return;
         }
+
+        taskHandler.HandleTask(taskKey);
+    }
+
+    public void ReloadCurrentScene()
+    {
+        // 현재 씬의 이름을 가져온다.
+        string currentSceneName = SceneManager.GetActiveScene().name;
+
+        // 씬을 다시 로드한다.
+        SceneManager.LoadScene(currentSceneName);
     }
 }

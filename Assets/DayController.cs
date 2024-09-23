@@ -54,6 +54,24 @@ public abstract class DayController : MonoBehaviour
     protected virtual void HandleTaskCompletion(string taskKey)
     {
         Debug.Log($"{taskKey}의 후속 작업 처리");
-        // 기본 구현은 로그만 출력하고, 필요한 경우 하위 클래스에서 오버라이드할 수 있도록 함
+    }
+
+    protected void MarkTaskComplete(string task)
+    {
+        if (gameState.ContainsKey(task))
+        {
+            gameState[task] = true;
+            Debug.Log($"{task} 완료");
+        }
+        else
+        {
+            Debug.LogWarning($"Task {task}가 gameState에 존재하지 않습니다.");
+        }
+    }
+
+    protected void UpdateCurrentTask(string task)
+    {
+        gameManager.currentTask = task;
+        Debug.Log($"currentTask 업데이트: {task}");
     }
 }
