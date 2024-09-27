@@ -9,7 +9,7 @@ public class Day1Controller : DayController
     private void OnEnable()
     {
         gameManager = FindObjectOfType<GameManager>();
-        taskHandler = FindObjectOfType<TaskHandler>();
+        taskHandler = GetComponent<TaskHandler>();
     }
 
     public override void Initialize(string task)

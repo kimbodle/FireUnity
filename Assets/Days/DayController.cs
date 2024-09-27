@@ -58,14 +58,14 @@ public abstract class DayController : MonoBehaviour
 
     protected void MarkTaskComplete(string task)
     {
-        if (gameState.ContainsKey(task))
+        if (!gameState.ContainsKey(task))
         {
             gameState[task] = true;
             Debug.Log($"{task} 완료");
         }
         else
         {
-            Debug.LogWarning($"Task {task}가 gameState에 존재하지 않습니다.");
+            Debug.LogWarning($"이미 완료한 {task}. gameState에 이미 존재");
         }
     }
 
