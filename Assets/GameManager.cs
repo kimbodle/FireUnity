@@ -117,7 +117,7 @@ public class GameManager : MonoBehaviour
     {
         string nextSceneName = "Day" + currentDay + "Scene";
         currentTask = "Intro";
-        gameState = new Dictionary<string, bool>(); //gameState[nextSceneName] = true;
+        gameState.Clear(); //gameState[nextSceneName] = true;
         //InitializeGameState(currentDay, currentTask, gameState);
         SaveGame();
         SceneManager.LoadScene(nextSceneName);
