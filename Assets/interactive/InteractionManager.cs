@@ -8,8 +8,8 @@ public class InteractionManager : MonoBehaviour
 {
     private Canvas canvasObj;
 
-    public GameObject examineButtonPrefab; // 살펴보기 버튼 프리팹
-    public GameObject interactionTextPrefab; // 상호작용 메시지 텍스트 프리팹
+    public GameObject examineButtonPrefab; // 복사할 버튼 프리팹
+    public GameObject interactionTextPrefab; // 복사할 메시지 텍스트 프리팹
 
     private GameObject examineButton; // 살펴보기 버튼
     private TMP_Text interactionText; // 상호작용 메시지 텍스트
@@ -17,6 +17,8 @@ public class InteractionManager : MonoBehaviour
     private Button buttonComponent;
 
     private IInteractable currentInteractable; // 현재 상호작용 가능한 오브젝트
+
+    public bool isInteraction = true;
 
     private void Start()
     {
@@ -85,23 +87,29 @@ public class InteractionManager : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("OnTriggerEnter2D 발동!");
-        IInteractable interactable = collision.GetComponent<IInteractable>();
-        Debug.Log(interactable != null ? "상호작용 가능한 오브젝트 발견" : "상호작용 가능한 오브젝트 없음");
-        if (interactable != null)
+        if (isInteraction)
         {
-            currentInteractable = interactable;
-            ShowInteractionUI(interactable.GetInteractionMessage());
+            IInteractable interactable = collision.GetComponent<IInteractable>();
+            Debug.Log(interactable != null ? "상호작용 가능한 오브젝트 발견" : "상호작용 가능한 오브젝트 없음");
+            if (interactable != null)
+            {
+                currentInteractable = interactable;
+                ShowInteractionUI(interactable.GetInteractionMessage());
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("OnTriggerExit2D 발동!");
-        IInteractable interactable = collision.GetComponent<IInteractable>();
-        if (interactable != null && interactable == currentInteractable)
+        if (isInteraction)
         {
-            HideInteractionUI();
-            currentInteractable = null;
+            Debug.Log("OnTriggerExit2D 발동!");
+            IInteractable interactable = collision.GetComponent<IInteractable>();
+            if (interactable != null && interactable == currentInteractable)
+            {
+                HideInteractionUI();
+                currentInteractable = null;
+            }
         }
     }
 }
