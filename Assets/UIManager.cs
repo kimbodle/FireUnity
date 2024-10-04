@@ -6,12 +6,14 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    
     public static UIManager Instance { get; private set; }
 
     public GameObject LoginUI;
-    public Button completeTaskButton;
-    public Button saveGameButton;
-    public Button loadGameButton;
+
+    [Space(10)]
+    public GameObject mapUI; // 지도 UI 오브젝트
+    public Button paperIconButton; // 종이 아이콘 버튼
 
     private void Awake()
     {
@@ -29,11 +31,12 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         LoginUI.SetActive(false);
+        // 시작할 때는 지도 UI를 비활성화
+        mapUI.SetActive(false);
 
-        // 버튼 클릭 이벤트에 메서드 연결
-        //completeTaskButton.onClick.AddListener(OnCompleteTaskButtonClicked);
-        //saveGameButton.onClick.AddListener(OnSaveGameButtonClicked);
-        //loadGameButton.onClick.AddListener(OnLoadGameButtonClicked);
+
+        //종이 아이콘을 눌렀을 때 지도 UI를 활성화/비활성화
+        paperIconButton.onClick.AddListener(ToggleMapUI);
     }
 
     public void openLoginUI()
@@ -45,22 +48,10 @@ public class UIManager : MonoBehaviour
     {
         LoginUI.SetActive(false);
     }
-
-    private void OnCompleteTaskButtonClicked()
+    public void ToggleMapUI()
     {
-        // Task 완료 처리
-        GameManager.Instance.CompleteTask();
-    }
-
-    private void OnSaveGameButtonClicked()
-    {
-        // 게임 상태 저장
-        GameManager.Instance.SaveGame();
-    }
-
-    private void OnLoadGameButtonClicked()
-    {
-        // 게임 상태 불러오기
-        GameManager.Instance.LoadGame();
+        Debug.Log("맵 버턴 눌렸어용");
+        // 지도 UI가 활성화되어 있다면 비활성화, 비활성화 상태면 활성화
+        mapUI.SetActive(!mapUI.activeSelf);
     }
 }

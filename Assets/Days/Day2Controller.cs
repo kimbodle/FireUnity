@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Day2Controller : DayController
 {
+    private void OnEnable()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+        MapManager.Instance.UpdateMapRegions();
+    }
     public override void Initialize(string task)
     {
         // 초기화 로직

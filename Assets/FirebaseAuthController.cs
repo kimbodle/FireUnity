@@ -97,6 +97,7 @@ public class FirebaseAuthController : MonoBehaviour
             {
                 Debug.Log("Signed in " + User.UserId);
                 message = "Signed in: " + User.Email;
+                //UIManager.Instance.closeLoginUI();
                 uid = User.UserId;
                 isMessageUpdated = true;
                 LoadGameState();
@@ -143,6 +144,8 @@ public class FirebaseAuthController : MonoBehaviour
                 AuthResult authResult = task.Result;
                 FirebaseUser newUser = authResult.User;
                 message = "Login successful: " + newUser.Email;
+                //Map 하기 위해 UIManager 코드 추가 해보면 알게 된 사실인데 이 Login()함수 코드가 로그인 할때 안쓰임....(?)
+                //UIManager.Instance.closeLoginUI();
                 uid = newUser.UserId;
                 isMessageUpdated = true;
 
@@ -155,6 +158,7 @@ public class FirebaseAuthController : MonoBehaviour
     {
         auth.SignOut();
         User = null;
+        Debug.Log("로그아웃됨");
     }
 
     void OnApplicationQuit()

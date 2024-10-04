@@ -128,4 +128,8 @@ public class GameManager : MonoBehaviour
         // DayController를 배열로 관리하도록 수정
         return stateManager.dayControllers[currentDay - 1]; // 인덱스 조정
     }
+    public int GetCurrentDay()
+    {
+        return currentDay;
+    }
 }
