@@ -3,14 +3,14 @@ using UnityEngine.UI;
 
 public class InventorySlot : MonoBehaviour
 {
-    public Image icon; // 아이템 아이콘을 표시할 UI 이미지
+    public Image defalutIcon; // 아이템 아이콘을 표시할 기본 UI 이미지
     private Item currentItem; // 현재 슬롯에 저장된 아이템
 
     void Start()
     {
-        if (icon == null)
+        if (defalutIcon == null)
         {
-            icon = GetComponent<Image>();
+            defalutIcon = GetComponent<Image>();
         }
     }
     // 아이템을 슬롯에 추가하는 함수
@@ -20,12 +20,23 @@ public class InventorySlot : MonoBehaviour
         if (item != null)
         {
             currentItem = item;
-            icon.sprite = item.itemIcon;
-            icon.enabled = true;
+            defalutIcon.sprite = item.itemIcon;
+            defalutIcon.enabled = true;
         }
         else
         {
             Debug.LogError("아이템이 null입니다.");
+        }
+    }
+
+    // 아이템을 사용하는 함수
+    public void UseItem()
+    {
+        if (currentItem != null)
+        {
+            currentItem.Use();
+            InventoryUI.Instance.RemoveItem(currentItem); // 아이템 사용 후 인벤토리에서 제거
+            ClearSlot(); // 슬롯에서 아이템 제거
         }
     }
 
@@ -34,8 +45,8 @@ public class InventorySlot : MonoBehaviour
     public void ClearSlot()
     {
         currentItem = null;
-        icon.sprite = null;
-        icon.enabled = false;
+        defalutIcon.sprite = null;
+        defalutIcon.enabled = false;
     }
 
     // 슬롯이 비었는지 확인하는 함수

@@ -11,8 +11,9 @@ public class HealItem : Item
     {
         if (isUsable)
         {
-            // 실제 체력 회복 로직 추가 필요 (예: 플레이어 체력 회복)
-            Debug.Log("드래그");
+            Debug.Log($"{itemName} 사용");
+            // 아이템 사용 로직 추가 (예: 체력 회복 등)
+            InventoryUI.Instance.RemoveItem(this); // 아이템 사용 후 제거
         }
         else
         {

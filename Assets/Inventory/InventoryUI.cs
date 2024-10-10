@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryUI : MonoBehaviour, IDragHandler, IEndDragHandler
+public class InventoryUI : MonoBehaviour
 {
     public static InventoryUI Instance { get; private set; } // 싱글톤 인스턴스
     public GameObject inventoryPanel; // 인벤토리 UI 패널
@@ -13,10 +13,12 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IEndDragHandler
     public GameObject itemDetailPanel; // 아이템 상세보기 패널
     public Image itemDetailImage; // 상세보기 패널의 아이템 이미지
     public TMP_Text itemDetailText; // 상세보기 패널의 텍스트
-    public Image draggableItemIcon; // 드래그할 아이템의 아이콘
-    public LayerMask dropLayerMask; // 아이템을 드롭할 수 있는 콜라이더가 속한 레이어
 
-    private Item selectedItem;
+    public Button IventoryUiIcon;
+    public Button itemDetailCloseButton;
+    
+
+    DragHandler dragHandler;
 
     private void Awake()
     {
@@ -30,16 +32,20 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IEndDragHandler
         }
     }
 
+    private void Start()
+    {
+        dragHandler= FindObjectOfType<DragHandler>();
+        //itemDetailCloseButton = GetComponentInChildren<Button>();
+        IventoryUiIcon.onClick.AddListener(ToggleInventory);
+        itemDetailCloseButton.onClick.AddListener(OncloseitemDetailPanel);
+    }
+
     // 아이템 클릭 시 호출되는 함수 (자세히 보기 또는 드래그 시작)
     public void OnItemClick(Item item)
     {
         if (item.isUsable)
         {
-            // 드래그할 아이템을 설정
-            selectedItem = item;
-            draggableItemIcon.sprite = item.itemIcon;
-            draggableItemIcon.gameObject.SetActive(true);
-            Debug.Log("드래그용 아이템 아이콘 활성");
+            dragHandler.StartDrag(item);
         }
         else
         {
@@ -49,46 +55,9 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IEndDragHandler
             itemDetailText.text = item.ShowDetails();
         }
     }
-
-    // 아이템을 드래그하는 동안 호출되는 함수
-    public void OnDrag(PointerEventData eventData)
+    public void OncloseitemDetailPanel()
     {
-        Debug.Log("OnDrag함수 호출 중");
-        if (draggableItemIcon.gameObject.activeSelf)
-        {
-            draggableItemIcon.transform.position = Input.mousePosition;
-        }
-    }
-
-    // 드래그가 끝날 때 호출되는 함수 (드롭 시점)
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        if (selectedItem != null)
-        {
-            Vector2 dropPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Collider2D hitCollider = Physics2D.OverlapPoint(dropPosition, dropLayerMask);
-
-            if (hitCollider != null)
-            {
-                // 드롭할 위치가 적합한지 확인 후 아이템 사용
-                Debug.Log($"Dropped on: {hitCollider.name}");
-
-                // 예: 특정 콜라이더를 확인하여 아이템 사용 처리
-                if (hitCollider.CompareTag("DropZone"))
-                {
-                    selectedItem.Use();
-                }
-            }
-
-            ResetDrag();
-        }
-    }
-
-    // 드래그가 끝나면 초기화
-    private void ResetDrag()
-    {
-        selectedItem = null;
-        draggableItemIcon.gameObject.SetActive(false);
+        itemDetailPanel.SetActive(false);
     }
 
     // 빈 슬롯을 찾는 함수
@@ -104,6 +73,15 @@ public class InventoryUI : MonoBehaviour, IDragHandler, IEndDragHandler
         InventorySlot newInventorySlot = newSlot.GetComponent<InventorySlot>();
         inventorySlots.Add(newInventorySlot);
         return newInventorySlot;
+    }
+
+    public void RemoveItem(Item item)
+    {
+        InventorySlot slotToRemove = inventorySlots.Find(slot => slot.HasItem(item));
+        if (slotToRemove != null)
+        {
+            slotToRemove.ClearSlot();
+        }
     }
 
     // 인벤토리 창을 열고 닫는 함수
