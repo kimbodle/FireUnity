@@ -7,7 +7,7 @@ public class MoveController : MonoBehaviour
 {
     [SerializeField] float movementSpeed = 3f;
     Vector2 movement = new Vector2();
-    Rigidbody2D rigidbody2D;
+    private Rigidbody2D rigidbody2D;
 
     Animator animator;
 

@@ -41,20 +41,14 @@ public class InventoryUI : MonoBehaviour
     }
 
     // 아이템 클릭 시 호출되는 함수 (자세히 보기 또는 드래그 시작)
-    public void OnItemClick(Item item)
+    public void OnItemDoubleClick(Item item)
     {
-        if (item.isUsable)
-        {
-            dragHandler.StartDrag(item);
-        }
-        else
-        {
-            // 아이템 상세보기 패널 활성화 및 정보 설정
-            itemDetailPanel.SetActive(true);
-            itemDetailImage.sprite = item.itemIcon;
-            itemDetailText.text = item.ShowDetails();
-        }
+        // 아이템 상세보기 패널 활성화 및 정보 설정
+        itemDetailPanel.SetActive(true);
+        itemDetailImage.sprite = item.itemIcon;
+        itemDetailText.text = item.ShowDetails();
     }
+
     public void OncloseitemDetailPanel()
     {
         itemDetailPanel.SetActive(false);

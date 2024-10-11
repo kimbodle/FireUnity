@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int currentDay = 1;
     public string currentTask = "Intro";
     public Dictionary<string, bool> gameState = new Dictionary<string, bool>();
-    private bool isLoadingFromLogin = false;
 
     private FirestoreController firestoreController;
     private FirebaseAuthController authController;

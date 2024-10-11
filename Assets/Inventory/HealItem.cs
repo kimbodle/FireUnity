@@ -24,7 +24,8 @@ public class HealItem : Item
     // 아이템 상세보기 메서드
     public override string ShowDetails()
     {
-        string details = $"{itemName}: {description}, 체력 회복량: {healAmount}";
+        //string details = $"{itemName}: {description}, 체력 회복량: {healAmount}";
+        string details = description;
         Debug.Log(details);
         return details;
         // UI로 상세 정보를 표시하는 로직이 필요하다면 여기에 추가
