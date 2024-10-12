@@ -11,9 +11,15 @@ public class UIManager : MonoBehaviour
 
     public GameObject LoginUI;
 
-    [Space(10)]
-    public GameObject mapUI; // 지도 UI 오브젝트
-    public Button paperIconButton; // 종이 아이콘 버튼
+    [Space(10)] //지도
+    public GameObject mapCanvas; // 지도 UI 오브젝트
+    public Button mapIconButton; // 종이 아이콘 버튼
+
+
+    [Space(10)] //인벤토리
+    public GameObject inventoryCanvas; // 인벤토리 UI 패널
+    //public InventoryUI inventoryUI;
+    public Button inventoryUIButton;
 
     private void Awake()
     {
@@ -30,28 +36,38 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
+        //inventoryUI = inventoryUI.GetComponent<InventoryUI>();
+        inventoryCanvas.SetActive(false);
         LoginUI.SetActive(false);
-        // 시작할 때는 지도 UI를 비활성화
-        mapUI.SetActive(false);
+        mapCanvas.SetActive(false);
 
 
-        //종이 아이콘을 눌렀을 때 지도 UI를 활성화/비활성화
-        paperIconButton.onClick.AddListener(ToggleMapUI);
+        //onClick 연결
+        mapIconButton.onClick.AddListener(ToggleMapUI);
+        inventoryUIButton.onClick.AddListener(ToggleInventoryUI);
     }
 
-    public void openLoginUI()
+    public void OpenLoginUI()
     {
         LoginUI.SetActive(true);
     }
 
-    public void closeLoginUI()
+    public void CloseLoginUI()
     {
         LoginUI.SetActive(false);
     }
     public void ToggleMapUI()
     {
-        Debug.Log("맵 버턴 눌렸어용");
-        // 지도 UI가 활성화되어 있다면 비활성화, 비활성화 상태면 활성화
-        mapUI.SetActive(!mapUI.activeSelf);
+        mapCanvas.SetActive(!mapCanvas.activeSelf);
+    }
+    /*public void ToggleInventoryUI()
+    {
+        inventoryUI.ToggleInventory();
+    }*/
+
+    // 인벤토리 창을 열고 닫는 함수
+    public void ToggleInventoryUI()
+    {
+        inventoryCanvas.SetActive(!inventoryCanvas.activeSelf);
     }
 }

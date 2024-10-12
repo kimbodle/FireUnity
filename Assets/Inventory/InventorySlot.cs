@@ -30,8 +30,10 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     // 슬롯을 클릭했을 때 호출되는 함수
     public void OnSlotClick()
     {
+        Debug.Log("테스트좀");
         if (currentItem != null)
         {
+            
             if (!isSelected)
             {
                 isSelected = true; // 선택 상태로 설정

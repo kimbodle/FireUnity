@@ -7,18 +7,17 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     public static InventoryUI Instance { get; private set; } // 싱글톤 인스턴스
-    public GameObject inventoryPanel; // 인벤토리 UI 패널
+    public GameObject itemDetailPanel; // 아이템 상세보기 패널
+    [Space(10)]
     public GameObject slotPrefab; // 슬롯 프리팹
     public List<InventorySlot> inventorySlots; // 인벤토리 슬롯 리스트
-    public GameObject itemDetailPanel; // 아이템 상세보기 패널
+    [Space(10)]
     public Image itemDetailImage; // 상세보기 패널의 아이템 이미지
     public TMP_Text itemDetailText; // 상세보기 패널의 텍스트
+    public Button itemDetailCloseButton; //상세보기 패널 닫기
+    [Space(10)]
+    [SerializeField] private Transform content;
 
-    public Button IventoryUiIcon;
-    public Button itemDetailCloseButton;
-    
-
-    DragHandler dragHandler;
 
     private void Awake()
     {
@@ -34,9 +33,7 @@ public class InventoryUI : MonoBehaviour
 
     private void Start()
     {
-        dragHandler= FindObjectOfType<DragHandler>();
-        //itemDetailCloseButton = GetComponentInChildren<Button>();
-        IventoryUiIcon.onClick.AddListener(ToggleInventory);
+        
         itemDetailCloseButton.onClick.AddListener(OncloseitemDetailPanel);
     }
 
@@ -63,7 +60,7 @@ public class InventoryUI : MonoBehaviour
     // 새로운 슬롯을 생성하는 함수
     public InventorySlot CreateNewSlot()
     {
-        GameObject newSlot = Instantiate(slotPrefab, inventoryPanel.transform);
+        GameObject newSlot = Instantiate(slotPrefab, content);
         InventorySlot newInventorySlot = newSlot.GetComponent<InventorySlot>();
         inventorySlots.Add(newInventorySlot);
         return newInventorySlot;
@@ -78,9 +75,14 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    // 인벤토리 창을 열고 닫는 함수
-    public void ToggleInventory()
+
+    // 인벤토리 슬롯을 모두 초기화하는 함수
+    public void ClearAllSlots()
     {
-        inventoryPanel.SetActive(!inventoryPanel.activeSelf);
+        foreach (var slot in inventorySlots)
+        {
+            slot.ClearSlot();
+        }
+        inventorySlots.Clear(); // 리스트도 비웁니다.
     }
 }

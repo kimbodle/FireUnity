@@ -7,7 +7,8 @@ public class DragHandler : MonoBehaviour
     public static DragHandler Instance { get; private set; }
     public Image draggableItemIcon; // 드래그할 아이템의 아이콘
     private Item selectedItem;
-    //private Vector3 originalPosition; // 드래그 아이콘의 원래 위치
+
+    public LayerMask dropLayerMask;
 
     private void Awake()
     {
@@ -26,7 +27,6 @@ public class DragHandler : MonoBehaviour
         selectedItem = item;
         draggableItemIcon.sprite = itemSprite;
         draggableItemIcon.gameObject.SetActive(true);
-        //originalPosition = draggableItemIcon.transform.position; // 원래 위치 저장
         draggableItemIcon.transform.position = Input.mousePosition;
         Debug.Log($"{selectedItem.itemName} 드래그 시작");
     }
@@ -42,7 +42,9 @@ public class DragHandler : MonoBehaviour
     public bool OnEndDrag(PointerEventData eventData)
     {
         Vector2 dropPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Collider2D hitCollider = Physics2D.OverlapPoint(dropPosition);
+        //Collider2D hitCollider = Physics2D.OverlapPoint(dropPosition);
+
+        Collider2D hitCollider = Physics2D.OverlapPoint(dropPosition, dropLayerMask);
 
         if (hitCollider != null && hitCollider.CompareTag("DropZone"))
         {
@@ -70,6 +72,5 @@ public class DragHandler : MonoBehaviour
     {
         selectedItem = null;
         draggableItemIcon.gameObject.SetActive(false);
-        //draggableItemIcon.transform.position = originalPosition; // 아이콘 위치 초기화
     }
 }
