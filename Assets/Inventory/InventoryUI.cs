@@ -85,4 +85,17 @@ public class InventoryUI : MonoBehaviour
         }
         inventorySlots.Clear(); // 리스트도 비웁니다.
     }
+
+    public void DeselectAllSlots()
+    {
+        bool anySelected = inventorySlots.Exists(slot => slot.isSelected);
+        if (anySelected)
+        {
+            foreach (var slot in inventorySlots)
+            {
+                slot.Deselect();
+            }
+        }
+    }
+
 }

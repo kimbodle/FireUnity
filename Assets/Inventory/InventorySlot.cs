@@ -6,7 +6,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Image defaultIcon; // 아이템 아이콘을 표시할 기본 UI 이미지
     private Item currentItem; // 현재 슬롯에 저장된 아이템
-    private bool isSelected = false; // 아이템 선택 상태
+    public bool isSelected = false; // 아이템 선택 상태
 
     void Start()
     {
@@ -15,6 +15,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             defaultIcon = GetComponent<Image>();
         }
     }
+
 
     // 아이템을 슬롯에 추가하는 함수
     public void AddItem(Item item)
@@ -30,24 +31,26 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     // 슬롯을 클릭했을 때 호출되는 함수
     public void OnSlotClick()
     {
-        Debug.Log("테스트좀");
+        Debug.Log("테스트중");
         if (currentItem != null)
         {
-            
             if (!isSelected)
             {
-                isSelected = true; // 선택 상태로 설정
+                InventoryUI.Instance.DeselectAllSlots(); // 다른 슬롯 선택 해제
+                isSelected = true;
                 defaultIcon.color = Color.grey;
                 Debug.Log($"{currentItem.itemName} 선택됨");
             }
             else
             {
-                // 선택 상태에서 다시 클릭하면 상세보기
-                InventoryUI.Instance.OnItemDoubleClick(currentItem);
-                Debug.Log($"{currentItem.itemName} 상세보기");
+                InventoryUI.Instance.OnItemDoubleClick(currentItem); // 아이템 상세 보기
                 isSelected = false;
                 defaultIcon.color = Color.white;
             }
+        }
+        else
+        {
+            Debug.Log("currentItem is null");
         }
     }
 
@@ -114,5 +117,11 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public bool HasItem(Item item)
     {
         return currentItem == item;
+    }
+
+    public void Deselect()
+    {
+        isSelected = false;
+        defaultIcon.color = Color.white;
     }
 }
