@@ -6,6 +6,8 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; } // ΩÃ±€≈Ê ¿ŒΩ∫≈œΩ∫
     private InventoryUI inventoryUI;
 
+    private List<Item> items = new List<Item>();
+
     private void Start()
     {
         inventoryUI = FindObjectOfType<InventoryUI>();

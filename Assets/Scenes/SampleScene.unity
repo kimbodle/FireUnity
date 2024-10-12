@@ -530,11 +530,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64431662b16767a46ad399778b18b250, type: 3}
---- !u!224 &219268270 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 8021090781340844410, guid: 64431662b16767a46ad399778b18b250, type: 3}
-  m_PrefabInstance: {fileID: 219268269}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &230959783
 GameObject:
   m_ObjectHideFlags: 0
@@ -2055,8 +2050,8 @@ GameObject:
   - component: {fileID: 893872346}
   - component: {fileID: 893872345}
   - component: {fileID: 893872344}
-  - component: {fileID: 893872343}
   - component: {fileID: 893872342}
+  - component: {fileID: 893872347}
   m_Layer: 0
   m_Name: HealItem2
   m_TagString: Untagged
@@ -2109,26 +2104,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.14, y: 0.14}
   m_EdgeRadius: 0
---- !u!114 &893872343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 893872341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd485a91a8b5dc2418cb8dce455f6a21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: healItem
-  itemIcon: {fileID: 25398937, guid: 2163b9016fe70eb4eafabda5468a8297, type: 3}
-  description: heal test
-  itemID: 2
-  isUsable: 0
-  allowedDropZones:
-  - 2
-  healAmount: 0
 --- !u!114 &893872344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2208,6 +2183,26 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &893872347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 893872341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd485a91a8b5dc2418cb8dce455f6a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: HealItem
+  itemIcon: {fileID: 25398937, guid: 2163b9016fe70eb4eafabda5468a8297, type: 3}
+  description: teslfjjkda
+  itemID: 1
+  isUsable: 0
+  allowedDropZones:
+  - 1
+  healAmount: 0
 --- !u!1 &896045304
 GameObject:
   m_ObjectHideFlags: 0
@@ -2219,8 +2214,8 @@ GameObject:
   - component: {fileID: 896045307}
   - component: {fileID: 896045306}
   - component: {fileID: 896045305}
-  - component: {fileID: 896045308}
   - component: {fileID: 896045309}
+  - component: {fileID: 896045310}
   m_Layer: 0
   m_Name: WeaponItem1
   m_TagString: Untagged
@@ -2307,26 +2302,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &896045308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 896045304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd485a91a8b5dc2418cb8dce455f6a21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: WeaponItem
-  itemIcon: {fileID: 1097137587, guid: 2163b9016fe70eb4eafabda5468a8297, type: 3}
-  description: testDesc1
-  itemID: 1
-  isUsable: 0
-  allowedDropZones:
-  - 1
-  healAmount: 0
 --- !u!61 &896045309
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2372,6 +2347,26 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.25940922, y: 0.21249846}
   m_EdgeRadius: 0
+--- !u!114 &896045310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 896045304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd485a91a8b5dc2418cb8dce455f6a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Weapon
+  itemIcon: {fileID: 1097137587, guid: 2163b9016fe70eb4eafabda5468a8297, type: 3}
+  description: testplz
+  itemID: 2
+  isUsable: 0
+  allowedDropZones:
+  - 2
+  healAmount: 0
 --- !u!1 &932501972
 GameObject:
   m_ObjectHideFlags: 0
@@ -2535,7 +2530,7 @@ MonoBehaviour:
   itemDetailPanel: {fileID: 261500374}
   slotPrefab: {fileID: 2968044175244471007, guid: 64431662b16767a46ad399778b18b250, type: 3}
   inventorySlots:
-  - {fileID: 1960176116}
+  - {fileID: 5894764097642265704}
   itemDetailImage: {fileID: 799819825}
   itemDetailText: {fileID: 420650730}
   itemDetailCloseButton: {fileID: 1404632171}
@@ -5434,7 +5429,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 219268270}
+  - {fileID: 8021090781155198423}
   m_Father: {fileID: 30100894}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -5613,17 +5608,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd280ffe2cd24b446b2deb8282b4f1c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1960176116 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5894764097590835397, guid: 64431662b16767a46ad399778b18b250, type: 3}
-  m_PrefabInstance: {fileID: 219268269}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d537f6ac3c9c0074393eef2a16c75849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1962520192
@@ -6602,6 +6586,22 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a35a72b64a0f4a45a658d52a90042a8, type: 3}
+--- !u!114 &5894764097642265704 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5894764097590835397, guid: 64431662b16767a46ad399778b18b250, type: 3}
+  m_PrefabInstance: {fileID: 219268269}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d537f6ac3c9c0074393eef2a16c75849, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &8021090781155198423 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8021090781340844410, guid: 64431662b16767a46ad399778b18b250, type: 3}
+  m_PrefabInstance: {fileID: 219268269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

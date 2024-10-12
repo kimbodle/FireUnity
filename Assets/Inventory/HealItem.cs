@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class HealItem : Item
 {
-    public int healAmount; // 회복량
-
+    private void Start()
+    {
+        itemName = "heal"; // 아이템 이름 초기화
+        // 코드에서 아이콘 설정
+        //itemIcon = Resources.Load<Sprite>("Icons/HealIcon"); // Icons 폴더에 HealIcon이라는 이름의 스프라이트가 있어야 함
+        description = "test"; // 설명 초기화
+        itemID = 1;
+        isUsable = true;
+        allowedDropZones = new List<string> { "SafeZone" };
+    } 
+    
     // 아이템 사용 메서드
     public override void Use()
     {
@@ -20,6 +29,7 @@ public class HealItem : Item
             Debug.Log($"{itemName}는 사용할 수 없습니다.");
         }
     }
+
 
     // 아이템 상세보기 메서드
     public override string ShowDetails()

@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Image defaultIcon; // 아이템 아이콘을 표시할 기본 UI 이미지
+    [SerializeField]
     private Item currentItem; // 현재 슬롯에 저장된 아이템
     public bool isSelected = false; // 아이템 선택 상태
 
@@ -22,7 +23,17 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     {
         if (item != null)
         {
-            currentItem = item;
+            // 슬롯에 같은 스크립트 추가
+            Item newItem = item.GetComponent<Item>();
+            currentItem = newItem;
+
+            // 슬롯에 같은 타입의 스크립트 추가
+            System.Type itemType = item.GetType();
+            if (GetComponent(itemType) == null)
+            {
+                gameObject.AddComponent(itemType);
+            }
+
             defaultIcon.sprite = item.itemIcon;
             defaultIcon.enabled = true;
         }
@@ -31,6 +42,7 @@ public class InventorySlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     // 슬롯을 클릭했을 때 호출되는 함수
     public void OnSlotClick()
     {
+        currentItem = GetComponent<Item>();
         Debug.Log("테스트중");
         if (currentItem != null)
         {
